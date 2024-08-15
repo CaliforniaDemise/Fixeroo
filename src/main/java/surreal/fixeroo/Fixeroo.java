@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import surreal.fixeroo.events.EventXPOrb;
 
 @Mod.EventBusSubscriber
-@Mod(modid = Fixeroo.MODID, name = "Fixeroo", version = "@VERSION@")
+@Mod(modid = Fixeroo.MODID, name = "Fixeroo", version = "@VERSION@", dependencies = "required-after:configanytime")
 public class Fixeroo {
     public static final String MODID = "xporbclump";
     public static Logger LOGGER = LogManager.getLogger(MODID);

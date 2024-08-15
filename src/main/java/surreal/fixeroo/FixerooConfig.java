@@ -1,6 +1,8 @@
 package surreal.fixeroo;
 
+import com.cleanroommc.configanytime.ConfigAnytime;
 import net.minecraftforge.common.config.Config;
+import surreal.fixeroo.core.FixerooPlugin;
 
 @Config(modid = Fixeroo.MODID)
 public class FixerooConfig {
@@ -26,5 +28,11 @@ public class FixerooConfig {
     public static class GolemTweaks {
         @Config.Comment("Enable fixes to golem")
         public boolean enable = true;
+    }
+
+    static {
+        if (FixerooPlugin.configAnytime) {
+            ConfigAnytime.register(FixerooConfig.class);
+        }
     }
 }
