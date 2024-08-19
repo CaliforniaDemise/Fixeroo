@@ -16,13 +16,13 @@ public class FixerooTransformer implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
        boolean check = false;
 
-        switch (name) {
+        switch (transformedName) {
             case "net.minecraft.entity.item.EntityXPOrb": basicClass = transformEntityXPOrb(basicClass); check = true; break;
             case "net.minecraft.client.renderer.entity.RenderXPOrb": basicClass = transformRenderXPOrb(basicClass); check = true; break;
             case "net.minecraft.block.BlockPumpkin": basicClass = transformBlockPumpkin(basicClass); check = true; break;
         }
 
-        if (check) FixerooPlugin.LOGGER.info("Transforming {}", name);
+        if (check) FixerooPlugin.LOGGER.info("Transforming {}", transformedName);
         return basicClass;
     }
 
