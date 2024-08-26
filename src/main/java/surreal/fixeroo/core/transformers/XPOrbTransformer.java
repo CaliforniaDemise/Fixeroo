@@ -9,48 +9,45 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class XPOrbTransformer extends TypicalTransformer {
 
-    public static void transformEntityXPOrb(ClassNode cls) {
+    public static byte[] transformEntityXPOrb(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.xpOrbClump.enable) return basicClass;
+        ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
-            if (method.name.equals(deobf ? "onUpdate" : "func_70071_h_")) {
+            if (method.name.equals(getName("onUpdate", "func_70071_h_"))) {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
-
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();
-
-                    if (node.getOpcode() == POP) {
+                    if (node.getOpcode() == INVOKESPECIAL) {
                         node = node.getNext();
-
                         method.instructions.insertBefore(node, new VarInsnNode(ALOAD, 0));
                         method.instructions.insertBefore(node, hook("EntityXPOrb$onUpdate", "(Lnet/minecraft/entity/item/EntityXPOrb;)V"));
-
                         break;
                     }
                 }
             }
-            else if (FixerooConfig.xpOrbClump.removeCooldown && method.name.equals(deobf ? "onCollideWithPlayer" : "func_70100_b_")) {
+            else if (FixerooConfig.xpOrbClump.removeCooldown && method.name.equals(getName("onCollideWithPlayer", "func_70100_b_"))) {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
-                boolean remove = false;
-
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();
-
-                    if (remove) iterator.remove();
-
-                    if (node instanceof LineNumberNode && ((LineNumberNode) node).line == 243) {
-                        remove = true;
-                    } else if (node instanceof LabelNode && remove) break;
+                    if (node.getOpcode() == ICONST_2) {
+                        method.instructions.insertBefore(node, new InsnNode(ICONST_0));
+                        iterator.remove();
+                    }
                 }
-
                 break;
             }
         }
+        return write(cls);
     }
 
-    public static void transformRenderXPOrb(ClassNode cls) {
+    public static byte[] transformRenderXPOrb(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.xpOrbClump.changeOrbSize) return basicClass;
+        ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
-            if (method.name.equals(deobf ? "doRender" : "func_76986_a")) {
+            if (method.name.equals(getName("doRender", "func_76986_a"))) {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
                 boolean first = true;
+                int i = 0;
 
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();
@@ -68,12 +65,14 @@ public class XPOrbTransformer extends TypicalTransformer {
                             }
 
                             iterator.remove();
+                            i++;
+                            if (i == 4) break;
                         }
                     }
                 }
-
                 break;
             }
         }
+        return write(cls);
     }
 }
