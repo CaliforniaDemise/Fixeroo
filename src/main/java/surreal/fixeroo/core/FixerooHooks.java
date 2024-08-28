@@ -5,22 +5,36 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import surreal.fixeroo.FixerooConfig;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class FixerooHooks {
+
+    public static float EntityPlayer$getEyeHeight(float original, EntityPlayer player) {
+        return player.isElytraFlying() ? 0.4F : original;
+    }
+
+    public static boolean RenderPlayer$isSneak(boolean original, EntityLivingBase entity) {
+        return original && !entity.isElytraFlying();
+    }
+
+    public static float ModelPlayer$setRotationAngles(Entity entity, float original) {
+        if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isElytraFlying()) return 0.0F;
+        return original;
+    }
 
     public static void EntityXPOrb$onUpdate(EntityXPOrb orb) {
         World world = orb.world;

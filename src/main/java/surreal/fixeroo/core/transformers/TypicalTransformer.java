@@ -32,7 +32,11 @@ public class TypicalTransformer {
     }
 
     static byte[] write(ClassNode cls) {
-        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        return write(cls, ClassWriter.COMPUTE_MAXS);
+    }
+
+    static byte[] write(ClassNode cls, int writerOptions) {
+        ClassWriter writer = new ClassWriter(writerOptions);
         cls.accept(writer);
         return writer.toByteArray();
     }
