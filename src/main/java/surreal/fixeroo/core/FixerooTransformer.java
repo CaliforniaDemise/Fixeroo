@@ -3,6 +3,7 @@ package surreal.fixeroo.core;
 import net.minecraft.launchwrapper.IClassTransformer;
 import surreal.fixeroo.core.transformers.ElytraTransformer;
 import surreal.fixeroo.core.transformers.GolemTransformer;
+import surreal.fixeroo.core.transformers.PreciseEntityPositionTransformer;
 import surreal.fixeroo.core.transformers.XPOrbTransformer;
 
 @SuppressWarnings("unused")
@@ -27,6 +28,9 @@ public class FixerooTransformer implements IClassTransformer {
                 return ElytraTransformer.transformModelPlayer(transformedName, basicClass);
             case "net.minecraft.client.renderer.entity.RenderPlayer": return ElytraTransformer.transformRenderPlayer(transformedName, basicClass);
             case "net.minecraft.entity.player.EntityPlayer": return ElytraTransformer.transformEntityPlayer(transformedName, basicClass);
+
+            // Fix Entity position
+            case "net.minecraft.util.math.Vec3i": return PreciseEntityPositionTransformer.transformVec3i(transformedName, basicClass);
         }
         return basicClass;
     }

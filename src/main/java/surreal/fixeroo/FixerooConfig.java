@@ -10,6 +10,7 @@ public class FixerooConfig {
     public static final XPOrbClump xpOrbClump = new XPOrbClump();
     public static final GolemTweaks golemTweaks = new GolemTweaks();
     public static final ElytraTweaks elytraTweaks = new ElytraTweaks();
+    public static final PreciseEntityPosition preciseEntityPosition = new PreciseEntityPosition();
 
     public static class XPOrbClump {
         @Config.Comment("Enable xp orb clumping")
@@ -35,6 +36,11 @@ public class FixerooConfig {
 
     public static class ElytraTweaks {
         @Config.Comment({"Enable fixes to elytra", "Fixes MC-90598 and MC-162401"})
+        public boolean enable = true;
+    }
+
+    public static class PreciseEntityPosition {
+        @Config.Comment({"Fix Entity.getPosition", "X and Z position will returns the floor MathHelper.floor doesn't consider for negative numbers."})
         public boolean enable = true;
     }
 
