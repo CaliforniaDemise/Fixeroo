@@ -6,8 +6,10 @@ import surreal.fixeroo.core.FixerooPlugin;
 
 @Config(modid = Fixeroo.MODID)
 public class FixerooConfig {
-    public static XPOrbClump xpOrbClump = new XPOrbClump();
-    public static GolemTweaks golemTweaks = new GolemTweaks();
+
+    public static final XPOrbClump xpOrbClump = new XPOrbClump();
+    public static final GolemTweaks golemTweaks = new GolemTweaks();
+    public static final ElytraTweaks elytraTweaks = new ElytraTweaks();
 
     public static class XPOrbClump {
         @Config.Comment("Enable xp orb clumping")
@@ -22,11 +24,17 @@ public class FixerooConfig {
         @Config.Comment("How many xp orbs can be in that area")
         public int maxOrbCount = 1;
 
+        @Config.Comment("Changes orbs size based on the amount of experience it holds")
         public boolean changeOrbSize = false;
     }
 
     public static class GolemTweaks {
         @Config.Comment("Enable fixes to golem")
+        public boolean enable = true;
+    }
+
+    public static class ElytraTweaks {
+        @Config.Comment({"Enable fixes to elytra", "Fixes MC-90598 and MC-162401"})
         public boolean enable = true;
     }
 

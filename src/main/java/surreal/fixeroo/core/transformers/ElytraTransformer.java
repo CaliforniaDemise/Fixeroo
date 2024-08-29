@@ -1,6 +1,7 @@
 package surreal.fixeroo.core.transformers;
 
 import org.objectweb.asm.tree.*;
+import surreal.fixeroo.FixerooConfig;
 
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import static org.objectweb.asm.Opcodes.*;
 public class ElytraTransformer extends TypicalTransformer {
 
     public static byte[] transformModelPlayer(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.elytraTweaks.enable) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
             if (method.name.equals(getName("render", "func_78088_a"))) {
@@ -43,6 +45,7 @@ public class ElytraTransformer extends TypicalTransformer {
     }
 
     public static byte[] transformRenderPlayer(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.elytraTweaks.enable) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
             if (method.name.equals(getName("doRender", "func_76986_a"))) {
@@ -77,6 +80,7 @@ public class ElytraTransformer extends TypicalTransformer {
     }
 
     public static byte[] transformEntityPlayer(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.elytraTweaks.enable) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
             if (method.name.equals(getName("getEyeHeight", "func_70047_e"))) {
