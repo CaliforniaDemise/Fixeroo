@@ -23,19 +23,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class FixerooHooks {
 
-    public static float EntityPlayer$getEyeHeight(float original, EntityPlayer player) {
-        return player.isElytraFlying() ? 0.4F : original;
-    }
-
-    public static boolean RenderPlayer$isSneak(boolean original, EntityLivingBase entity) {
-        return original && !entity.isElytraFlying();
-    }
-
-    public static float ModelPlayer$setRotationAngles(Entity entity, float original) {
-        if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isElytraFlying()) return 0.0F;
-        return original;
-    }
-
+    // XP Orb Clump
     public static void EntityXPOrb$onUpdate(EntityXPOrb orb) {
         World world = orb.world;
         double a = FixerooConfig.xpOrbClump.areaSize/2;
@@ -53,6 +41,7 @@ public class FixerooHooks {
         return xpValue > 2487 ? 0.3F * orb.getTextureByXP() : 0.3F * Math.max(1, xpValue & 20);
     }
 
+    // Golem Tweaks
     public static Predicate<BlockWorldState> BlockPumpkin$predicateAny() {
         return state -> true;
     }
@@ -111,5 +100,19 @@ public class FixerooHooks {
                 }
             }
         }
+    }
+
+    // Elytra Tweaks
+    public static float EntityPlayer$getEyeHeight(float original, EntityPlayer player) {
+        return player.isElytraFlying() ? 0.4F : original;
+    }
+
+    public static boolean RenderPlayer$isSneak(boolean original, EntityLivingBase entity) {
+        return original && !entity.isElytraFlying();
+    }
+
+    public static float ModelPlayer$setRotationAngles(Entity entity, float original) {
+        if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isElytraFlying()) return 0.0F;
+        return original;
     }
 }
