@@ -56,7 +56,6 @@ public class PreciseEntityPositionTransformer extends TypicalTransformer {
                 break;
             }
         }
-        writeClass(cls);
         return write(cls);
     }
 }
