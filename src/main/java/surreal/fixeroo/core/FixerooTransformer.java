@@ -30,7 +30,7 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.minecraft.entity.player.EntityPlayer": return ElytraTransformer.transformEntityPlayer(transformedName, basicClass);
 
             // Fix Entity position
-            case "net.minecraft.util.math.Vec3i": return PreciseEntityPositionTransformer.transformVec3i(transformedName, basicClass);
+            case "net.minecraft.client.entity.EntityPlayerSP": return PreciseEntityPositionTransformer.transformEntityPlayerSP(transformedName, basicClass);
         }
         return basicClass;
     }

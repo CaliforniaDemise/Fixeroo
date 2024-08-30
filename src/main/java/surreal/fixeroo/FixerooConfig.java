@@ -40,7 +40,7 @@ public class FixerooConfig {
     }
 
     public static class PreciseEntityPosition {
-        @Config.Comment({"Fix Entity.getPosition", "X and Z position will returns the floor MathHelper.floor doesn't consider for negative numbers."})
+        @Config.Comment({"Fix EntityPlayerSP.getPosition", "For some reason they override getPosition and return wrong position if X and/or Z is negative."})
         public boolean enable = true;
     }
 
