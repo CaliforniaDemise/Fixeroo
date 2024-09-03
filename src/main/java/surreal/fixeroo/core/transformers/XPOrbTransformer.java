@@ -58,13 +58,12 @@ public class XPOrbTransformer extends TypicalTransformer {
                         if (cst instanceof Float && cst.equals(0.3F)) {
                             if (first) {
                                 first = false;
+                            } else {
                                 method.instructions.insertBefore(node, new VarInsnNode(ALOAD, 1));
                                 method.instructions.insertBefore(node, hook("RenderXPOrb$getSize", "(Lnet/minecraft/entity/item/EntityXPOrb;)F"));
-                            } else {
-                                method.instructions.insertBefore(node, new VarInsnNode(FLOAD, 25));
+                                iterator.remove();
                             }
 
-                            iterator.remove();
                             i++;
                             if (i == 4) break;
                         }
