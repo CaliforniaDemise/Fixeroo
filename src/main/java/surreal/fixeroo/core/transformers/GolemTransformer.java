@@ -3,8 +3,6 @@ package surreal.fixeroo.core.transformers;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
-import static org.objectweb.asm.Opcodes.*;
-
 public class GolemTransformer extends TypicalTransformer {
 
     public static byte[] transformBlockPumpkin(String transformedName, byte[] basicClass) {

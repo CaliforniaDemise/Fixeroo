@@ -5,8 +5,6 @@ import surreal.fixeroo.FixerooConfig;
 
 import java.util.Iterator;
 
-import static org.objectweb.asm.Opcodes.*;
-
 public class XPOrbTransformer extends TypicalTransformer {
 
     public static byte[] transformEntityXPOrb(String transformedName, byte[] basicClass) {

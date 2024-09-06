@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
@@ -15,10 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.RETURN;
-
-public class TypicalTransformer {
+public class TypicalTransformer implements Opcodes {
 
     static Logger logger = FixerooPlugin.getLogger();
     static boolean deobf = FMLLaunchHandler.isDeobfuscatedEnvironment();
