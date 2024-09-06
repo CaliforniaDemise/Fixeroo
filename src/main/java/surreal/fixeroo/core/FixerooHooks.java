@@ -9,13 +9,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import surreal.fixeroo.FixerooConfig;
 
 import java.util.List;
@@ -114,5 +118,37 @@ public class FixerooHooks {
     public static float ModelPlayer$setRotationAngles(Entity entity, float original) {
         if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isElytraFlying()) return 0.0F;
         return original;
+    }
+
+    // Shulker Coloring
+    public static EnumDyeColor EntityShulker$getColorFromStack(EntityShulker shulker, ItemStack stack) {
+        if (stack.isEmpty()) return null;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        if (ids.length == 0) return null;
+
+        EnumDyeColor color = null;
+
+        for (int i : ids) {
+            if (i == OreDictionary.getOreID("dyeWhite")) { color = EnumDyeColor.WHITE; break; }
+            if (i == OreDictionary.getOreID("dyeOrange")) { color = EnumDyeColor.ORANGE; break; }
+            if (i == OreDictionary.getOreID("dyeMagenta")) { color = EnumDyeColor.MAGENTA; break; }
+            if (i == OreDictionary.getOreID("dyeLightBlue")) { color = EnumDyeColor.LIGHT_BLUE; break; }
+            if (i == OreDictionary.getOreID("dyeYellow")) { color = EnumDyeColor.YELLOW; break; }
+            if (i == OreDictionary.getOreID("dyeLime")) { color = EnumDyeColor.LIME; break; }
+            if (i == OreDictionary.getOreID("dyePink")) { color = EnumDyeColor.PINK; break; }
+            if (i == OreDictionary.getOreID("dyeGray")) { color = EnumDyeColor.GRAY; break; }
+            if (i == OreDictionary.getOreID("dyeLightGray")) { color = EnumDyeColor.SILVER; break; }
+            if (i == OreDictionary.getOreID("dyeCyan")) { color = EnumDyeColor.CYAN; break; }
+            if (i == OreDictionary.getOreID("dyePurple")) { color = EnumDyeColor.PURPLE; break; }
+            if (i == OreDictionary.getOreID("dyeBlue")) { color = EnumDyeColor.BLUE; break; }
+            if (i == OreDictionary.getOreID("dyeBrown")) { color = EnumDyeColor.BROWN; break; }
+            if (i == OreDictionary.getOreID("dyeGreen")) { color = EnumDyeColor.GREEN; break; }
+            if (i == OreDictionary.getOreID("dyeRed")) { color = EnumDyeColor.RED; break; }
+            if (i == OreDictionary.getOreID("dyeBlack")) { color = EnumDyeColor.BLACK; break; }
+        }
+
+        if (shulker.getColor() == color) return null;
+        if (color != null) stack.shrink(1);
+        return color;
     }
 }

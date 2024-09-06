@@ -1,10 +1,7 @@
 package surreal.fixeroo.core;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import surreal.fixeroo.core.transformers.ElytraTransformer;
-import surreal.fixeroo.core.transformers.GolemTransformer;
-import surreal.fixeroo.core.transformers.PreciseEntityPositionTransformer;
-import surreal.fixeroo.core.transformers.XPOrbTransformer;
+import surreal.fixeroo.core.transformers.*;
 
 @SuppressWarnings("unused")
 public class FixerooTransformer implements IClassTransformer {
@@ -31,6 +28,9 @@ public class FixerooTransformer implements IClassTransformer {
 
             // Fix Entity position
             case "net.minecraft.client.entity.EntityPlayerSP": return PreciseEntityPositionTransformer.transformEntityPlayerSP(transformedName, basicClass);
+
+            // Shulker Coloring
+            case "net.minecraft.entity.monster.EntityShulker": return ShulkerColoringTransformer.transformEntityShulker(transformedName, basicClass);
         }
         return basicClass;
     }

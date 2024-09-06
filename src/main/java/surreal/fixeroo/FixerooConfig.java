@@ -11,6 +11,7 @@ public class FixerooConfig {
     public static final GolemTweaks golemTweaks = new GolemTweaks();
     public static final ElytraTweaks elytraTweaks = new ElytraTweaks();
     public static final PreciseEntityPosition preciseEntityPosition = new PreciseEntityPosition();
+    public static final ShulkerColoring shulkerColoring = new ShulkerColoring();
 
     public static class XPOrbClump {
         @Config.Comment("Enable xp orb clumping")
@@ -42,6 +43,11 @@ public class FixerooConfig {
     public static class PreciseEntityPosition {
         @Config.Comment({"Fix EntityPlayerSP.getPosition", "For some reason they override getPosition and return wrong position if X and/or Z is negative."})
         public boolean enable = true;
+    }
+
+    public static class ShulkerColoring {
+        @Config.Comment("Allow coloring shulkers with dyes.")
+        public boolean enable = false;
     }
 
     static {
