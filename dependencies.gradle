@@ -17,4 +17,6 @@ repositories {
 
 dependencies {
     implementation 'com.cleanroommc:configanytime:3.0'
+    compileOnly rfg.deobf("curse.maven:gtceu-557242:5519022")
+    compileOnly rfg.deobf("curse.maven:ic2-242638:3838713")
 }

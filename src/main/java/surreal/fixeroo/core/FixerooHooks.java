@@ -16,11 +16,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import surreal.fixeroo.FixerooConfig;
+import surreal.fixeroo.IntegrationHandler;
 
 import java.util.List;
 
@@ -121,12 +123,14 @@ public class FixerooHooks {
     }
 
     // Shulker Coloring
-    public static EnumDyeColor EntityShulker$getColorFromStack(EntityShulker shulker, ItemStack stack) {
+    public static EnumDyeColor EntityShulker$getColorFromStack(EntityShulker shulker, EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (stack.isEmpty()) return null;
+
+        EnumDyeColor color = IntegrationHandler.getColor(player, hand, stack);
+        if (color != null) return color;
+
         int[] ids = OreDictionary.getOreIDs(stack);
         if (ids.length == 0) return null;
-
-        EnumDyeColor color = null;
 
         for (int i : ids) {
             if (i == OreDictionary.getOreID("dyeWhite")) { color = EnumDyeColor.WHITE; break; }
@@ -148,7 +152,10 @@ public class FixerooHooks {
         }
 
         if (shulker.getColor() == color) return null;
-        if (color != null) stack.shrink(1);
+        if (color != null) {
+            if (stack.isItemStackDamageable()) stack.damageItem(1, player);
+            else stack.shrink(1);
+        }
         return color;
     }
 }
