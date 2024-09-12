@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import surreal.fixeroo.FixerooConfig;
@@ -35,7 +36,7 @@ public class FixerooHooks {
         double a = FixerooConfig.xpOrbClump.areaSize/2;
 
         List<EntityXPOrb> orbs = world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(orb.posX-a, orb.posY-a, orb.posZ-a, orb.posX+a, orb.posY+a, orb.posZ+a), entity -> entity != null && entity.posX != orb.posX && entity.posY != orb.posY && entity.posZ != orb.posZ);
-        if (orbs.size() >= FixerooConfig.xpOrbClump.maxOrbCount && !world.isRemote) {
+        if (orbs.size() >= FixerooConfig.xpOrbClump.maxOrbCount) {
             EntityXPOrb xpOrb = orbs.get(0);
             xpOrb.xpValue += orb.xpValue;
             orb.setDead();
@@ -44,7 +45,7 @@ public class FixerooHooks {
 
     public static float RenderXPOrb$getSize(EntityXPOrb orb) {
         int xpValue = orb.xpValue;
-        return xpValue > 2487 ? 0.3F * orb.getTextureByXP() : 0.3F * Math.max(1, xpValue & 20);
+        return Math.max(0.3F, MathHelper.sqrt(xpValue) / 10);
     }
 
     // Golem Tweaks
