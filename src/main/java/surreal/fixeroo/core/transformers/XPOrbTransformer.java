@@ -1,5 +1,8 @@
 package surreal.fixeroo.core.transformers;
 
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import org.objectweb.asm.commons.TryCatchBlockSorter;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
@@ -23,6 +26,22 @@ public class XPOrbTransformer extends TypicalTransformer {
                     }
                 }
             }
+            else if (method.name.equals(getName("writeEntityToNBT", "func_70014_b"))) {
+                AbstractInsnNode node = method.instructions.getLast();
+                while (node.getOpcode() != INVOKEVIRTUAL) node = node.getPrevious();
+                method.instructions.remove(node.getPrevious());
+                method.instructions.insert(node, new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/nbt/NBTTagCompound", getName("setInteger", "func_74768_a"), "(Ljava/lang/String;I)V", false));
+                method.instructions.remove(node);
+            }
+            else if (method.name.equals(getName("readEntityFromNBT", "func_70037_a"))) {
+                AbstractInsnNode node = method.instructions.getLast();
+                while (node.getOpcode() != INVOKEVIRTUAL) node = node.getPrevious();
+                while (node.getOpcode() != ALOAD) {
+                    node = node.getPrevious();
+                    method.instructions.remove(node.getNext());
+                }
+                method.instructions.insert(node,hook("EntityXPOrb$getXPValue", "(Lnet/minecraft/nbt/NBTTagCompound;)I") );
+            }
             else if (FixerooConfig.xpOrbClump.removeCooldown && method.name.equals(getName("onCollideWithPlayer", "func_70100_b_"))) {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
                 while (iterator.hasNext()) {
@@ -35,6 +54,7 @@ public class XPOrbTransformer extends TypicalTransformer {
                 break;
             }
         }
+        writeClass(cls);
         return write(cls);
     }
 

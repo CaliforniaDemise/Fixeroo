@@ -3,6 +3,7 @@ package surreal.fixeroo.core;
 import net.minecraft.launchwrapper.IClassTransformer;
 import surreal.fixeroo.core.transformers.*;
 
+
 @SuppressWarnings("unused")
 public class FixerooTransformer implements IClassTransformer {
 

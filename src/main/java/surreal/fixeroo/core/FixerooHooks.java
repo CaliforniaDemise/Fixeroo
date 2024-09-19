@@ -16,11 +16,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
@@ -43,9 +45,14 @@ public class FixerooHooks {
         }
     }
 
+    public static int EntityXPOrb$getXPValue(NBTTagCompound tag) {
+        if (tag.hasKey("Value", Constants.NBT.TAG_SHORT)) return tag.getShort("Value");
+        else return tag.getInteger("Value");
+    }
+
     public static float RenderXPOrb$getSize(EntityXPOrb orb) {
         int xpValue = orb.xpValue;
-        return Math.max(0.3F, MathHelper.sqrt(xpValue) / 10);
+        return Math.max(0.3F, MathHelper.sqrt(xpValue) / 100);
     }
 
     // Golem Tweaks
