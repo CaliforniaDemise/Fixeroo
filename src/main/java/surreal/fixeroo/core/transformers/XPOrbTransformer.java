@@ -1,8 +1,5 @@
 package surreal.fixeroo.core.transformers;
 
-import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import org.objectweb.asm.commons.TryCatchBlockSorter;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
@@ -10,6 +7,7 @@ import java.util.Iterator;
 
 public class XPOrbTransformer extends TypicalTransformer {
 
+    // TODO Fix xp orb bounding box with creating a prevXpValue field and checking the difference.
     public static byte[] transformEntityXPOrb(String transformedName, byte[] basicClass) {
         if (!FixerooConfig.xpOrbClump.enable) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
