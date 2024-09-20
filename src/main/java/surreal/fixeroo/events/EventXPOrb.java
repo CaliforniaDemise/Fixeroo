@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class EventXPOrb {
     @SubscribeEvent
-    public void remapLegacyClumps(@Nonnull RegistryEvent.MissingMappings<EntityEntry> event) {
+    public static void remapLegacyClumps(@Nonnull RegistryEvent.MissingMappings<EntityEntry> event) {
         for(RegistryEvent.MissingMappings.Mapping<EntityEntry> mapping : event.getAllMappings()) {
             if(mapping.key.equals(new ResourceLocation("clumps", "xp_orb_big"))) {
                 mapping.remap(GameData.getEntityRegistry().getValue(2));
