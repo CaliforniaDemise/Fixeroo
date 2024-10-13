@@ -12,6 +12,7 @@ public class FixerooConfig {
     public static final ElytraTweaks elytraTweaks = new ElytraTweaks();
     public static final PreciseEntityPosition preciseEntityPosition = new PreciseEntityPosition();
     public static final ShulkerColoring shulkerColoring = new ShulkerColoring();
+    public static final TileEntityRenderDistance TESRDistance = new TileEntityRenderDistance();
 
     public static class XPOrbClump {
         @Config.Comment("Enable xp orb clumping")
@@ -46,8 +47,19 @@ public class FixerooConfig {
     }
 
     public static class ShulkerColoring {
-        @Config.Comment("Allow coloring shulkers with dyes.")
+        @Config.Comment({"Allow coloring shulkers with dyes.", "default: false"})
         public boolean enable = false;
+    }
+
+    public static class TileEntityRenderDistance {
+        @Config.Comment({"Square of max distance of tile entity rendering. It's square because hypotenuse.", "Right now this only apples for banner because TESR's do get expensive and I'm too lazy to add Map support for Forge configs." })
+        public double maxDistance = 4096.0D;
+
+        @Config.Comment({"Apply this to all TESR's (chests, signs, skulls etc.) Beware that it might get laggy because there's no culling algorithm for TESR's", "This might not work for all TESR's because I'm lazy."})
+        public boolean applyToEverything = false;
+
+        @Config.Comment({"Remove the distance limit altogether.", "This option makes both of the other options redundant."})
+        public boolean I_AM_HIM = false;
     }
 
     static {
