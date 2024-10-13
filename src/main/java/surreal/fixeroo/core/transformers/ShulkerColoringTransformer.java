@@ -28,7 +28,7 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
 
             setColor.visitVarInsn(ALOAD, 1);
             setColor.visitVarInsn(ALOAD, 2);
-            setColor.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayer", getName("swingArm", ""), "(Lnet/minecraft/util/EnumHand;)V", false);
+            setColor.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayer", getName("swingArm", "func_184609_a"), "(Lnet/minecraft/util/EnumHand;)V", false);
 
             setColor.visitInsn(ICONST_1);
             setColor.visitInsn(IRETURN);
