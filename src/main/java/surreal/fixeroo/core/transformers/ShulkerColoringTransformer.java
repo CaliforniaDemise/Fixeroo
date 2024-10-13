@@ -12,8 +12,8 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
         if (!FixerooConfig.shulkerColoring.enable) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         {
-            MethodVisitor setColor = cls.visitMethod(ACC_PUBLIC, "setColor", "(Lnet/minecraft/item/EnumDyeColor;)Z", null, null);
-            setColor.visitVarInsn(ALOAD, 1);
+            MethodVisitor setColor = cls.visitMethod(ACC_PUBLIC, "setColor", "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/item/EnumDyeColor;)Z", null, null);
+            setColor.visitVarInsn(ALOAD, 3);
             Label l_con = new Label();
             setColor.visitJumpInsn(IFNULL, l_con);
             setColor.visitLabel(new Label());
@@ -21,10 +21,14 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
             setColor.visitVarInsn(ALOAD, 0);
             setColor.visitFieldInsn(GETFIELD, cls.name, getName("dataManager", "field_70180_af"), "Lnet/minecraft/network/datasync/EntityDataManager;");
             setColor.visitFieldInsn(GETSTATIC, cls.name, getName("COLOR", "field_190770_bw"), "Lnet/minecraft/network/datasync/DataParameter;");
-            setColor.visitVarInsn(ALOAD, 1);
+            setColor.visitVarInsn(ALOAD, 3);
             setColor.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/item/EnumDyeColor", getName("getMetadata", "func_176765_a"), "()I", false);
             setColor.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", "valueOf", "(B)Ljava/lang/Byte;", false);
             setColor.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/network/datasync/EntityDataManager", getName("set", "func_187227_b"), "(Lnet/minecraft/network/datasync/DataParameter;Ljava/lang/Object;)V", false);
+
+            setColor.visitVarInsn(ALOAD, 1);
+            setColor.visitVarInsn(ALOAD, 2);
+            setColor.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayer", getName("swingArm", ""), "(Lnet/minecraft/util/EnumHand;)V", false);
 
             setColor.visitInsn(ICONST_1);
             setColor.visitInsn(IRETURN);
@@ -49,8 +53,10 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
             dyeInteract.visitVarInsn(ASTORE, 4);
 
             dyeInteract.visitVarInsn(ALOAD, 0);
+            dyeInteract.visitVarInsn(ALOAD, 1);
+            dyeInteract.visitVarInsn(ALOAD, 2);
             dyeInteract.visitVarInsn(ALOAD, 4);
-            dyeInteract.visitMethodInsn(INVOKEVIRTUAL, cls.name, "setColor", "(Lnet/minecraft/item/EnumDyeColor;)Z", false);
+            dyeInteract.visitMethodInsn(INVOKEVIRTUAL, cls.name, "setColor", "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/item/EnumDyeColor;)Z", false);
             dyeInteract.visitInsn(IRETURN);
         }
         return write(cls);
