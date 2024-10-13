@@ -52,7 +52,6 @@ public class XPOrbTransformer extends TypicalTransformer {
                 break;
             }
         }
-        writeClass(cls);
         return write(cls);
     }
 
