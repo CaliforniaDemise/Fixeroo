@@ -134,7 +134,7 @@ public class FixerooHooks {
     public static EnumDyeColor EntityShulker$getColorFromStack(EntityShulker shulker, EntityPlayer player, EnumHand hand, ItemStack stack) {
         if (stack.isEmpty()) return null;
 
-        EnumDyeColor color = IntegrationHandler.getColor(player, hand, stack);
+        EnumDyeColor color = IntegrationHandler.ShulkerColoring$getColor(player, hand, stack);
         if (color != null) return color;
 
         int[] ids = OreDictionary.getOreIDs(stack);

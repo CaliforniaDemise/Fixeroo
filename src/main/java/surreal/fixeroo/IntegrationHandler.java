@@ -18,7 +18,7 @@ import java.util.Objects;
 public class IntegrationHandler {
 
     // Shulker coloring integration for GTCEu Spray Can and IC2 Painter.
-    public static EnumDyeColor getColor(EntityPlayer player, EnumHand hand, ItemStack stack) {
+    public static EnumDyeColor ShulkerColoring$getColor(EntityPlayer player, EnumHand hand, ItemStack stack) {
         String gt = "gregtech", ic2 = "ic2";
         ResourceLocation regName = Objects.requireNonNull(stack.getItem().getRegistryName());
 

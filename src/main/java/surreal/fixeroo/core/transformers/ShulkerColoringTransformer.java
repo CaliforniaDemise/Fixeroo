@@ -1,9 +1,12 @@
 package surreal.fixeroo.core.transformers;
 
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
+
+import java.util.Iterator;
 
 // Adds a way to color shulker entities.
 public class ShulkerColoringTransformer extends TypicalTransformer {
@@ -70,5 +73,52 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
             dyeInteract.visitInsn(IRETURN);
         }
         return write(cls);
+    }
+
+    public static byte[] transformFeatureShulkerPearlItem(String transformedName, byte[] basicClass) {
+        if (!FixerooConfig.shulkerColoring.enable) return basicClass;
+        ClassNode cls = read(transformedName, basicClass);
+        MethodNode method = cls.methods.get(cls.methods.size() - 2);
+        Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
+        while (iterator.hasNext()) {
+            AbstractInsnNode node = iterator.next();
+            if (node.getOpcode() == IFGT) {
+                String entityInteract = "net/minecraftforge/event/entity/player/PlayerInteractEvent$EntityInteract";
+
+                InsnList list = new InsnList();
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getTarget", "()Lnet/minecraft/entity/Entity;", false));
+                list.add(new TypeInsnNode(CHECKCAST, "net/minecraft/entity/monster/EntityShulker"));
+                list.add(new VarInsnNode(ASTORE, 3));
+
+                list.add(new VarInsnNode(ALOAD, 3));
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getEntityPlayer", "()Lnet/minecraft/entity/player/EntityPlayer;", false));
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getHand", "()Lnet/minecraft/util/EnumHand;", false));
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getItemStack", "()Lnet/minecraft/item/ItemStack;", false));
+                list.add(hook("EntityShulker$getColorFromStack", "(Lnet/minecraft/entity/monster/EntityShulker;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/EnumDyeColor;"));
+                list.add(new VarInsnNode(ASTORE, 4));
+
+                list.add(new VarInsnNode(ALOAD, 3));
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getEntityPlayer", "()Lnet/minecraft/entity/player/EntityPlayer;", false));
+                list.add(new VarInsnNode(ALOAD, 1));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, entityInteract, "getHand", "()Lnet/minecraft/util/EnumHand;", false));
+                list.add(new VarInsnNode(ALOAD, 4));
+                list.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/entity/monster/EntityShulker", "setColor", "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;Lnet/minecraft/item/EnumDyeColor;)Z", false));
+                LabelNode l_con = new LabelNode();
+                list.add(new JumpInsnNode(IFEQ, l_con));
+                list.add(new LabelNode());
+                list.add(new InsnNode(RETURN));
+
+                list.add(l_con);
+
+                method.instructions.insert(node, list);
+                break;
+            }
+        }
+        return write(cls, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
     }
 }

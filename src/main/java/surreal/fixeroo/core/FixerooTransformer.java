@@ -32,6 +32,7 @@ public class FixerooTransformer implements IClassTransformer {
 
             // Shulker Coloring
             case "net.minecraft.entity.monster.EntityShulker": return ShulkerColoringTransformer.transformEntityShulker(transformedName, basicClass);
+            case "net.darkhax.darkutils.features.shulkerpearl.FeatureShulkerPearlItem": return ShulkerColoringTransformer.transformFeatureShulkerPearlItem(transformedName, basicClass);
         }
         return basicClass;
     }
