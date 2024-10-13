@@ -41,6 +41,16 @@ public class ShulkerColoringTransformer extends TypicalTransformer {
         {
             MethodVisitor dyeInteract = cls.visitMethod(ACC_PROTECTED, getName("processInteract", "func_184645_a"), "(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/util/EnumHand;)Z", null, null);
             dyeInteract.visitVarInsn(ALOAD, 1);
+            dyeInteract.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayer", getName("isSneaking", "func_70093_af"), "()Z", false);
+            Label l_con = new Label();
+            dyeInteract.visitJumpInsn(IFEQ, l_con);
+            dyeInteract.visitLabel(new Label());
+            dyeInteract.visitInsn(ICONST_0);
+            dyeInteract.visitInsn(IRETURN);
+
+            dyeInteract.visitLabel(l_con);
+            dyeInteract.visitFrame(F_SAME, 0, null, 0, null);
+            dyeInteract.visitVarInsn(ALOAD, 1);
             dyeInteract.visitVarInsn(ALOAD, 2);
             dyeInteract.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/entity/player/EntityPlayer", getName("getHeldItem", "func_184586_b"), "(Lnet/minecraft/util/EnumHand;)Lnet/minecraft/item/ItemStack;", false);
             dyeInteract.visitVarInsn(ASTORE, 3); // HeldStack
