@@ -1,12 +1,6 @@
-import org.jetbrains.gradle.ext.Gradle
-
 plugins {
     id 'java'
-    id 'java-library'
-    id 'maven-publish'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
-    id 'eclipse'
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.35'
+    id 'xyz.wagyourtail.unimined' version '1.3.9'
 }
 
 version = project.mod_version
@@ -17,12 +11,7 @@ archivesBaseName = project.archives_base_name
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
-        // Azul covers the most platforms for Java 8 toolchains, crucially including MacOS arm64
-        vendor.set(org.gradle.jvm.toolchain.JvmVendorSpec.AZUL)
     }
-    // Generate sources and javadocs jars when building and publishing
-    withSourcesJar()
-    // withJavadocJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -34,70 +23,47 @@ configurations {
     implementation.extendsFrom(embed)
 }
 
-minecraft {
-    mcVersion = '1.12.2'
+unimined.minecraft {
+    version "1.12.2"
 
-    // MCP Mappings
-    mcpMappingChannel = 'stable'
-    mcpMappingVersion = '39'
-
-    // Set username here, the UUID will be looked up automatically
-    username = 'Developer'
-
-    // Add various JVM arguments here for runtime
-    def args = ["-ea:${project.group}"]
-    if (project.use_coremod.toBoolean()) {
-        args << '-Dfml.coreMods.load=' + coremod_plugin_class_name
+    mappings {
+        searge()
+        mcp("stable", "39-1.12")
     }
-    args << "-Xms128m"
-    args << "-Xmx2048m"
-    extraRunJvmArguments.addAll(args)
 
-    // Include and use dependencies' Access Transformer files
-    useDependencyAccessTransformers = true
+    minecraftForge {
+        loader "14.23.5.2860"
+    }
 
-    // Add any properties you want to swap out for a dynamic value at build time here
-    // Any properties here will be added to a class at build time, the name can be configured below
-    // Example:
-    injectedTags.put('MOD_VERSION', project.version)
-}
-
-// Generate a group.archives_base_name.Tags class
-tasks.injectTags.configure {
-    // Change Tags class' name here:
-    outputClassName.set("${project.group}.${project.mod_id}.Tags")
+    runs {
+        config("client") {
+            jvmArgs += "-Dfml.coreMods.load=surreal.fixeroo.core.FixerooPlugin"
+        }
+    }
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
-}
-
-dependencies {}
-
-apply from: 'dependencies.gradle'
-
-// Adds Access Transformer files to tasks
-if (project.use_access_transformer.toBoolean()) {
-    for (File at : sourceSets.getByName("main").resources.files) {
-        if (at.name.toLowerCase().endsWith("_at.cfg")) {
-            tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(at)
-            tasks.srgifyBinpatchedJar.accessTransformerFiles.from(at)
-        }
+    maven {
+        name = "wagyourtail releases"
+        url = "https://maven.wagyourtail.xyz/releases"
     }
 }
+
+apply from: 'dependencies.gradle'
 
 processResources {
     // This will ensure that this task is redone when the versions change
     inputs.property 'version', project.version
-    inputs.property 'mcversion', project.minecraft.version
+    inputs.property 'mcversion', "1.12.2"
 
     // Replace various properties in mcmod.info and pack.mcmeta if applicable
     filesMatching(['mcmod.info', 'pack.mcmeta']) { fcd ->
         // Replace version and mcversion
         fcd.expand (
                 'version': project.version,
-                'mcversion': project.minecraft.version
+                'mcversion': "1.12.2"
         )
     }
 
@@ -123,40 +89,4 @@ jar {
     }
     // Add all embedded dependencies into the jar
     from(provider{ configurations.embed.collect {it.isDirectory() ? it : zipTree(it)} })
-}
-
-idea {
-    module {
-        inheritOutputDirs = true
-    }
-    project {
-        settings {
-            runConfigurations {
-                "1. Run Client"(Gradle) {
-                    taskNames = ["runClient"]
-                }
-                "2. Run Server"(Gradle) {
-                    taskNames = ["runServer"]
-                }
-                "3. Run Obfuscated Client"(Gradle) {
-                    taskNames = ["runObfClient"]
-                }
-                "4. Run Obfuscated Server"(Gradle) {
-                    taskNames = ["runObfServer"]
-                }
-            }
-            compiler.javac {
-                afterEvaluate {
-                    javacAdditionalOptions = "-encoding utf8"
-                    moduleJavacAdditionalOptions = [
-                            (project.name + ".main"): tasks.compileJava.options.compilerArgs.collect { '"' + it + '"' }.join(' ')
-                    ]
-                }
-            }
-        }
-    }
-}
-
-tasks.named("processIdeaSettings").configure {
-    dependsOn("injectTags")
 }
