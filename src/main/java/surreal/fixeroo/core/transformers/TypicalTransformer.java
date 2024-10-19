@@ -19,9 +19,8 @@ import java.nio.file.Files;
 public class TypicalTransformer implements Opcodes {
 
     static Logger logger = FixerooPlugin.getLogger();
-    static boolean deobf = FMLLaunchHandler.isDeobfuscatedEnvironment();
 
-    static ClassNode read(String transformedName, byte[] basicClass) {
+    protected static ClassNode read(String transformedName, byte[] basicClass) {
         logger.info("Transforming {}", transformedName);
         ClassReader reader = new ClassReader(basicClass);
         ClassNode cls = new ClassNode();
@@ -29,17 +28,17 @@ public class TypicalTransformer implements Opcodes {
         return cls;
     }
 
-    static byte[] write(ClassNode cls) {
+    protected static byte[] write(ClassNode cls) {
         return write(cls, ClassWriter.COMPUTE_MAXS);
     }
 
-    static byte[] write(ClassNode cls, int writerOptions) {
+    protected static byte[] write(ClassNode cls, int writerOptions) {
         ClassWriter writer = new ClassWriter(writerOptions);
         cls.accept(writer);
         return writer.toByteArray();
     }
 
-    static void writeClass(ClassNode cls) {
+    protected static void writeClass(ClassNode cls) {
         File file = new File("classOut/" + cls.name + ".class");
         file.getParentFile().mkdirs();
         try {
@@ -54,15 +53,15 @@ public class TypicalTransformer implements Opcodes {
         }
     }
 
-    static MethodInsnNode hook(String name, String desc) {
+    protected static MethodInsnNode hook(String name, String desc) {
         return new MethodInsnNode(INVOKESTATIC, "surreal/fixeroo/core/FixerooHooks", name, desc, false);
     }
 
-    static String getName(String mcp, String srg) {
+    protected static String getName(String mcp, String srg) {
         return FMLLaunchHandler.isDeobfuscatedEnvironment() ? mcp : srg;
     }
 
-    static AbstractInsnNode getReturn(InsnList instructions) {
+    protected static AbstractInsnNode getReturn(InsnList instructions) {
         AbstractInsnNode node = instructions.getLast();
         while (node.getOpcode() != RETURN) node = node.getPrevious();
         return node;
