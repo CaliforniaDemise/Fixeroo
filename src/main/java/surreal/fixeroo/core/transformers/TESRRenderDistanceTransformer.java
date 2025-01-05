@@ -3,6 +3,8 @@ package surreal.fixeroo.core.transformers;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
+import java.util.Iterator;
+
 public class TESRRenderDistanceTransformer extends TypicalTransformer {
 
     public static byte[] transformTileEntity(String transformedName, byte[] basicClass) {
@@ -27,16 +29,20 @@ public class TESRRenderDistanceTransformer extends TypicalTransformer {
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
             if (method.name.equals(getName("render", "func_147549_a"))) {
-                AbstractInsnNode node = method.instructions.getFirst();
-                while (node.getOpcode() != IFGE) {
-                    node = node.getNext();
-                    method.instructions.remove(node.getPrevious());
+                Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
+                while (iterator.hasNext()) {
+                    AbstractInsnNode node = iterator.next();
+                    if (node.getOpcode() == INVOKEVIRTUAL && ((MethodInsnNode) node).name.equals(getName("getMaxRenderDistanceSquared", ""))) {
+                        method.instructions.remove(node.getPrevious());
+                        method.instructions.insert(node, new LdcInsnNode(0x1.fffffffffffffP+1023));
+                        method.instructions.remove(node);
+                        break;
+                    }
                 }
-                ((JumpInsnNode) node).setOpcode(IFEQ);
-                method.instructions.insertBefore(node, new InsnNode(ICONST_1));
                 break;
             }
         }
+        writeClass(cls);
         return write(cls);
     }
 }
