@@ -32,7 +32,7 @@ public class TESRRenderDistanceTransformer extends TypicalTransformer {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();
-                    if (node.getOpcode() == INVOKEVIRTUAL && ((MethodInsnNode) node).name.equals(getName("getMaxRenderDistanceSquared", ""))) {
+                    if (node.getOpcode() == INVOKEVIRTUAL && ((MethodInsnNode) node).name.equals(getName("getMaxRenderDistanceSquared", "func_145833_n"))) {
                         method.instructions.remove(node.getPrevious());
                         method.instructions.insert(node, new LdcInsnNode(0x1.fffffffffffffP+1023));
                         method.instructions.remove(node);
