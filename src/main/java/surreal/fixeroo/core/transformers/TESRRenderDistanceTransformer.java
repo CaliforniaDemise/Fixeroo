@@ -3,21 +3,23 @@ package surreal.fixeroo.core.transformers;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
-// TODO Add whitelisting
 public class TESRRenderDistanceTransformer extends TypicalTransformer {
-    
+
     public static byte[] transformTileEntity(String transformedName, byte[] basicClass) {
-        if (!FixerooConfig.TESRDistance.applyToEverything || FixerooConfig.TESRDistance.I_AM_HIM) return basicClass;
+        if (FixerooConfig.TESRDistance.I_AM_HIM) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
             if (method.name.equals(getName("getMaxRenderDistanceSquared", "func_145833_n"))) {
                 AbstractInsnNode node = method.instructions.getLast();
                 while (node.getOpcode() != DRETURN) node = node.getPrevious();
-                method.instructions.remove(node.getPrevious());
-                method.instructions.insertBefore(node, new LdcInsnNode(FixerooConfig.TESRDistance.maxDistance));
+                InsnList list = new InsnList();
+                list.add(new VarInsnNode(ALOAD, 0));
+                list.add(hook("TileEntity$getDistance", "(DLnet/minecraft/tileentity/TileEntity;)D"));
+                method.instructions.insertBefore(node, list);
                 break;
             }
         }
+        writeClass(cls);
         return write(cls);
     }
 

@@ -1,6 +1,7 @@
 package surreal.fixeroo.core;
 
 import com.google.common.base.Predicate;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
@@ -17,7 +18,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -28,6 +31,7 @@ import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
 
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class FixerooHooks {
@@ -169,5 +173,17 @@ public class FixerooHooks {
             else stack.shrink(1);
         }
         return color;
+    }
+
+    // Tile Entity Render Distance
+    public static final Object2DoubleMap<ResourceLocation> TE_DISTANCE = FixerooConfig.TESRDistance.getDistanceMap();
+
+    public static double TileEntity$getDistance(double d, TileEntity te) {
+        double defVal = FixerooConfig.TESRDistance.maxDistance == 0.0D ? d : FixerooConfig.TESRDistance.maxDistance;
+        if (TE_DISTANCE == null || TE_DISTANCE.isEmpty()) return defVal;
+        ResourceLocation location = TileEntity.getKey(te.getClass());
+        double distance = TE_DISTANCE.get(location);
+        if (distance == 0.0) return defVal;
+        return distance;
     }
 }

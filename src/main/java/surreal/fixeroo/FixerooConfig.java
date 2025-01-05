@@ -1,8 +1,17 @@
 package surreal.fixeroo;
 
 import com.cleanroommc.configanytime.ConfigAnytime;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
+import org.jetbrains.annotations.Nullable;
 import surreal.fixeroo.core.FixerooPlugin;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Config(modid = Fixeroo.MODID)
 public class FixerooConfig {
@@ -52,14 +61,29 @@ public class FixerooConfig {
     }
 
     public static class TileEntityRenderDistance {
-        @Config.Comment({"Square of max distance of tile entity rendering. It's square because hypotenuse.", "Right now this only apples for banner because TESR's do get expensive and I'm too lazy to add Map support for Forge configs." })
-        public double maxDistance = 4096.0D;
+        @Config.Comment({"Square of max distance to render tile entities by default. 4096.0 is the vanilla value, use 0.0 to denote to not override the default value, tile entities can have different values." })
+        @Config.RangeDouble(min = 0.0D)
+        public double maxDistance = 0.0D;
 
-        @Config.Comment({"Apply this to all TESR's (chests, signs, skulls etc.) Beware that it might get laggy because there's no culling algorithm for TESR's", "This might not work for all TESR's because I'm lazy."})
-        public boolean applyToEverything = false;
+        @Config.Comment({"The max distance you can go away before tile entity gets discarded for rendering.", "You can't use 0 or negative values. You can use MAX to denote no limits. 4096 is the default distance limit.", "The distance given will be square rooted to get actual distance.", "Example: minecraft:banner#4096.0"})
+        public String[] distanceList = new String[] {};
 
         @Config.Comment({"Remove the distance limit altogether.", "This option makes both of the other options redundant."})
         public boolean I_AM_HIM = false;
+
+        @Nullable
+        public Object2DoubleMap<ResourceLocation> getDistanceMap() {
+            if (this.distanceList.length == 0) return null;
+            Object2DoubleMap<ResourceLocation> map = new Object2DoubleOpenHashMap<>();
+            for (String str : distanceList) {
+                String[] split = str.split("#");
+                if (split.length != 2) throw new RuntimeException("Config expression is wrong " + str);
+                double d = Double.parseDouble(split[1]);
+                if (d <= 0D) throw new RuntimeException("Config the given distance can't be 0 or negative");
+                map.put(new ResourceLocation(split[0]), d);
+            }
+            return map;
+        }
     }
 
     static {
