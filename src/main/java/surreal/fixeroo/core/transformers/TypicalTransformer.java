@@ -39,6 +39,7 @@ public class TypicalTransformer implements Opcodes {
     }
 
     protected static void writeClass(ClassNode cls) {
+        if (!FMLLaunchHandler.isDeobfuscatedEnvironment()) return;
         File file = new File("classOut/" + cls.name + ".class");
         file.getParentFile().mkdirs();
         try {

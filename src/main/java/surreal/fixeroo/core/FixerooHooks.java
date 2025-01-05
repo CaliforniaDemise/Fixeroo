@@ -32,6 +32,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class FixerooHooks {
 
+    public static void debug(Object obj) {
+        System.out.println(obj);
+    }
+
     // XP Orb Clump
     public static void EntityXPOrb$onUpdate(EntityXPOrb orb) {
         World world = orb.world;

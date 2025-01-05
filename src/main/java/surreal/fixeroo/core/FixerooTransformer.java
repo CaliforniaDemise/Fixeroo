@@ -37,6 +37,8 @@ public class FixerooTransformer implements IClassTransformer {
             // TESR Render Distance
             case "net.minecraft.tileentity.TileEntity": return TESRRenderDistanceTransformer.transformTileEntity(transformedName, basicClass);
             case "net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher": return TESRRenderDistanceTransformer.transformTileEntityRendererDispatcher(transformedName, basicClass);
+
+            case "net.machinemuse.powersuits.common.base.ModuleManager": return MPTransformer.transformModuleManager(transformedName, basicClass);
         }
         return basicClass;
     }
