@@ -1,22 +1,11 @@
 package surreal.fixeroo.core.transformers;
 
-import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.tree.*;
 import surreal.fixeroo.FixerooConfig;
 
+// TODO Add whitelisting
 public class TESRRenderDistanceTransformer extends TypicalTransformer {
-
-    public static byte[] transformTileEntityBanner(String transformedName, byte[] basicClass) {
-//        if (FixerooConfig.TESRDistance.applyToEverything || FixerooConfig.TESRDistance.I_AM_HIM) return basicClass;
-        ClassNode cls = read(transformedName, basicClass);
-        { // getMaxRenderDistanceSquared
-            MethodVisitor m = cls.visitMethod(ACC_PUBLIC, getName("getMaxRenderDistanceSquared", "func_145833_n"), "()D", null, null);
-            m.visitLdcInsn(FixerooConfig.TESRDistance.maxDistance);
-            m.visitInsn(DRETURN);
-        }
-        return write(cls);
-    }
-
+    
     public static byte[] transformTileEntity(String transformedName, byte[] basicClass) {
         if (!FixerooConfig.TESRDistance.applyToEverything || FixerooConfig.TESRDistance.I_AM_HIM) return basicClass;
         ClassNode cls = read(transformedName, basicClass);

@@ -61,7 +61,9 @@ repositories {
     mavenLocal()
 }
 
-dependencies {}
+dependencies {
+    compileOnlyApi 'org.jetbrains:annotations:24.1.0'
+}
 
 apply from: 'dependencies.gradle'
 
@@ -119,20 +121,6 @@ idea {
     }
     project {
         settings {
-            runConfigurations {
-                "1. Run Client"(Gradle) {
-                    taskNames = ["runClient"]
-                }
-                "2. Run Server"(Gradle) {
-                    taskNames = ["runServer"]
-                }
-                "3. Run Obfuscated Client"(Gradle) {
-                    taskNames = ["runObfClient"]
-                }
-                "4. Run Obfuscated Server"(Gradle) {
-                    taskNames = ["runObfServer"]
-                }
-            }
             compiler.javac {
                 afterEvaluate {
                     javacAdditionalOptions = "-encoding utf8"

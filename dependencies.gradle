@@ -17,6 +17,12 @@ repositories {
 
 dependencies {
     implementation 'com.cleanroommc:configanytime:3.0'
+
+    // Shulker Coloring
     compileOnly rfg.deobf("curse.maven:gtceu-557242:5519022")
     compileOnly rfg.deobf("curse.maven:ic2-242638:3838713")
+
+    // Modular Powersuits Fix
+    runtimeOnly "curse.maven:numia-235440:4629835"
+    implementation rfg.deobf("curse.mave:mpowersuits-235442:4623218")
 }

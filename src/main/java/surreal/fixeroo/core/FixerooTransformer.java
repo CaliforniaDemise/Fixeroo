@@ -35,7 +35,6 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.darkhax.darkutils.features.shulkerpearl.FeatureShulkerPearlItem": return ShulkerColoringTransformer.transformFeatureShulkerPearlItem(transformedName, basicClass);
 
             // TESR Render Distance
-            case "net.minecraft.tileentity.TileEntityBanner": return TESRRenderDistanceTransformer.transformTileEntityBanner(transformedName, basicClass);
             case "net.minecraft.tileentity.TileEntity": return TESRRenderDistanceTransformer.transformTileEntity(transformedName, basicClass);
             case "net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher": return TESRRenderDistanceTransformer.transformTileEntityRendererDispatcher(transformedName, basicClass);
         }
