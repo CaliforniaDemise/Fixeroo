@@ -38,7 +38,8 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.minecraft.tileentity.TileEntity": return TESRRenderDistanceTransformer.transformTileEntity(transformedName, basicClass);
             case "net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher": return TESRRenderDistanceTransformer.transformTileEntityRendererDispatcher(transformedName, basicClass);
 
-            case "net.machinemuse.powersuits.common.base.ModuleManager": return MPTransformer.transformModuleManager(transformedName, basicClass);
+            case "net.machinemuse.powersuits.common.base.ModuleManager": return MPSTransformer.transformModuleManager(transformedName, basicClass);
+            case "net.machinemuse.powersuits.common.config.MPSSettings": return MPSTransformer.transformMPSSettings(transformedName, basicClass);
         }
         return basicClass;
     }
