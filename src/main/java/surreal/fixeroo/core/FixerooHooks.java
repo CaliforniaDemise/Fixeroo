@@ -182,7 +182,7 @@ public class FixerooHooks {
         double defVal = FixerooConfig.TESRDistance.maxDistance == 0.0D ? d : FixerooConfig.TESRDistance.maxDistance;
         if (TE_DISTANCE == null || TE_DISTANCE.isEmpty()) return defVal;
         ResourceLocation location = TileEntity.getKey(te.getClass());
-        double distance = TE_DISTANCE.get(location);
+        double distance = TE_DISTANCE.getDouble(location);
         if (distance == 0.0) return defVal;
         return distance;
     }
