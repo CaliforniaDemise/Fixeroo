@@ -9,6 +9,7 @@ public class FixerooTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
+        if (!FixerooPlugin.configAnytime) return basicClass;
         switch (transformedName) {
             // Make XP Orbs get together to reduce FPS.
             // Potentially fixes a bug where game crashes when you get output from a furnace that holds too many experience.

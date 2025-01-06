@@ -28,7 +28,7 @@ public class TESRRenderDistanceTransformer extends TypicalTransformer {
         if (!FixerooConfig.TESRDistance.I_AM_HIM) return basicClass;
         ClassNode cls = read(transformedName, basicClass);
         for (MethodNode method : cls.methods) {
-            if (method.name.equals(getName("render", "func_147549_a"))) {
+            if (method.name.equals(getName("render", "func_180546_a"))) {
                 Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import surreal.fixeroo.core.FixerooPlugin;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,7 +79,11 @@ public class FixerooConfig {
             for (String str : distanceList) {
                 String[] split = str.split("#");
                 if (split.length != 2) throw new RuntimeException("Config expression is wrong " + str);
-                double d = Double.parseDouble(split[1]);
+                double d;
+                {
+                    if (split[1].toLowerCase(Locale.US).equals("max")) d = Double.MAX_VALUE;
+                    else d = Double.parseDouble(split[1]);
+                }
                 if (d <= 0D) throw new RuntimeException("Config the given distance can't be 0 or negative");
                 map.put(new ResourceLocation(split[0]), d);
             }
