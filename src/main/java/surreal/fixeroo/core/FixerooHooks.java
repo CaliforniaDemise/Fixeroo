@@ -27,6 +27,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
 
@@ -44,12 +46,16 @@ public class FixerooHooks {
     public static void EntityXPOrb$onUpdate(EntityXPOrb orb) {
         World world = orb.world;
         double a = FixerooConfig.xpOrbClump.areaSize/2;
-
-        List<EntityXPOrb> orbs = world.getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(orb.posX-a, orb.posY-a, orb.posZ-a, orb.posX+a, orb.posY+a, orb.posZ+a), entity -> entity != null && entity.posX != orb.posX && entity.posY != orb.posY && entity.posZ != orb.posZ);
-        if (orbs.size() >= FixerooConfig.xpOrbClump.maxOrbCount) {
-            EntityXPOrb xpOrb = orbs.get(0);
-            xpOrb.xpValue += orb.xpValue;
-            orb.setDead();
+        List<Entity> orbs = world.getEntitiesInAABBexcluding(orb, new AxisAlignedBB(orb.posX-a, orb.posY-a, orb.posZ-a, orb.posX+a, orb.posY+a, orb.posZ+a), e -> e instanceof EntityXPOrb);
+        System.out.println(orbs.size());
+        if (orbs.size() <= FixerooConfig.xpOrbClump.maxOrbCount) return;
+        int count = orbs.size();
+        for (Entity e : orbs) {
+            if (count <= FixerooConfig.xpOrbClump.maxOrbCount) return;
+            EntityXPOrb o = (EntityXPOrb) e;
+            orb.xpValue += o.xpValue;
+            o.setDead();
+            count--;
         }
     }
 
