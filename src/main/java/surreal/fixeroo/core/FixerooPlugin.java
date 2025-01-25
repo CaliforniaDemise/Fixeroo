@@ -36,9 +36,15 @@ public class FixerooPlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        List coremods = (List) data.get("coremodList");
-        for (Object coremod : coremods) {
-            if (coremod.toString().startsWith("ConfigAnytimePlugin")) configAnytime = true;
+        try {
+            Class.forName("top.outlands.foundation.LaunchHandler");
+            configAnytime = true;
+        }
+        catch (ClassNotFoundException e) {
+            List coremods = (List) data.get("coremodList");
+            for (Object coremod : coremods) {
+                if (coremod.toString().startsWith("ConfigAnytimePlugin")) configAnytime = true;
+            }
         }
     }
 

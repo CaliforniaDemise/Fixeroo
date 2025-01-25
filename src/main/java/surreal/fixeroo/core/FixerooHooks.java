@@ -27,13 +27,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
 
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public class FixerooHooks {
