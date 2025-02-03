@@ -12,6 +12,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.Name("Fixeroo")
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
 @IFMLLoadingPlugin.SortingIndex(1249)
+@IFMLLoadingPlugin.TransformerExclusions("surreal.fixeroo")
 public class FixerooPlugin implements IFMLLoadingPlugin {
 
     protected static final Logger LOGGER = LogManager.getLogger("Fixeroo");

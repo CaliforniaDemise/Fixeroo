@@ -1,7 +1,10 @@
 package surreal.fixeroo.core;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.core.transformers.*;
+
+import java.util.Arrays;
 
 
 @SuppressWarnings("unused")
@@ -42,6 +45,11 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.machinemuse.powersuits.common.base.ModuleManager": return MPSTransformer.transformModuleManager(transformedName, basicClass);
             case "net.machinemuse.powersuits.common.config.MPSSettings": return MPSTransformer.transformMPSSettings(transformedName, basicClass);
         }
+
+        if (Arrays.asList(FixerooConfig.TERotationFix.utRotationGlitchFixTargets).contains(transformedName)) {
+            return MisrotatedModdedTETransformer.transformModdedTE(transformedName, basicClass);
+        }
+
         return basicClass;
     }
 }

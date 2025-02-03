@@ -3,16 +3,12 @@ package surreal.fixeroo;
 import com.cleanroommc.configanytime.ConfigAnytime;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import org.jetbrains.annotations.Nullable;
 import surreal.fixeroo.core.FixerooPlugin;
 
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 @Config(modid = Fixeroo.MODID)
 public class FixerooConfig {
@@ -23,6 +19,7 @@ public class FixerooConfig {
     public static final PreciseEntityPosition preciseEntityPosition = new PreciseEntityPosition();
     public static final ShulkerColoring shulkerColoring = new ShulkerColoring();
     public static final TileEntityRenderDistance TESRDistance = new TileEntityRenderDistance();
+    public static final TileEntityRotationFix TERotationFix = new TileEntityRotationFix();
 
     public static class XPOrbClump {
         @Config.Comment("Enable xp orb clumping")
@@ -71,24 +68,16 @@ public class FixerooConfig {
 
         @Config.Comment({"Remove the distance limit altogether.", "This option makes both of the other options redundant."})
         public boolean I_AM_HIM = false;
+    }
 
-        @Nullable
-        public Object2DoubleMap<ResourceLocation> getDistanceMap() {
-            if (this.distanceList.length == 0) return null;
-            Object2DoubleMap<ResourceLocation> map = new Object2DoubleOpenHashMap<>();
-            for (String str : distanceList) {
-                String[] split = str.split("#");
-                if (split.length != 2) throw new RuntimeException("Config expression is wrong " + str);
-                double d;
-                {
-                    if (split[1].toLowerCase(Locale.US).equals("max")) d = Double.MAX_VALUE;
-                    else d = Double.parseDouble(split[1]);
-                }
-                if (d <= 0D) throw new RuntimeException("Config the given distance can't be 0 or negative");
-                map.put(new ResourceLocation(split[0]), d);
-            }
-            return map;
-        }
+    public static class TileEntityRotationFix {
+
+        @Config.RequiresMcRestart
+        @Config.Name("Rotation Glitch Fix Target Classes")
+        @Config.Comment({"Fixes modded tileEntity losing data when rotated by, for example, gregtech wrench.",
+                "Includes classpath(s) for the target tileEntity class.",
+                "Example: com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"})
+        public String[] utRotationGlitchFixTargets = new String[]{};
     }
 
     static {

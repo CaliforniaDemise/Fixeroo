@@ -21,4 +21,8 @@ dependencies {
     // Shulker Coloring
     compileOnly rfg.deobf("curse.maven:gtceu-557242:5519022")
     compileOnly rfg.deobf("curse.maven:ic2-242638:3838713")
+
+    // TE Rotation Fix
+    compileOnly rfg.deobf("curse.maven:travelers-backpack-321117:3150850")
+    compileOnly rfg.deobf("curse.maven:barrels-drums-storage-more-319404:2708193")
 }
