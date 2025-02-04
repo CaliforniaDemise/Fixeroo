@@ -2,7 +2,6 @@ package surreal.fixeroo.core;
 
 import com.google.common.base.Predicate;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
@@ -28,12 +27,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
-import org.jetbrains.annotations.Nullable;
+import surreal.fixeroo.Fixeroo;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
 
 import java.util.List;
-import java.util.Locale;
 
 @SuppressWarnings("unused")
 public class FixerooHooks {
@@ -185,25 +183,7 @@ public class FixerooHooks {
     }
 
     // Tile Entity Render Distance
-    public static final Object2DoubleMap<ResourceLocation> TE_DISTANCE = getDistanceMap();
-
-    @Nullable
-    private static Object2DoubleMap<ResourceLocation> getDistanceMap() {
-        if (FixerooConfig.TESRDistance.distanceList.length == 0) return null;
-        Object2DoubleMap<ResourceLocation> map = new Object2DoubleOpenHashMap<>();
-        for (String str : FixerooConfig.TESRDistance.distanceList) {
-            String[] split = str.split("#");
-            if (split.length != 2) throw new RuntimeException("Config expression is wrong " + str);
-            double d;
-            {
-                if (split[1].toLowerCase(Locale.US).equals("max")) d = Double.MAX_VALUE;
-                else d = Double.parseDouble(split[1]);
-            }
-            if (d <= 0D) throw new RuntimeException("Config the given distance can't be 0 or negative");
-            map.put(new ResourceLocation(split[0]), d);
-        }
-        return map;
-    }
+    public static final Object2DoubleMap<ResourceLocation> TE_DISTANCE = Fixeroo.getDistanceMap();
 
     public static double TileEntity$getDistance(double d, TileEntity te) {
         double defVal = FixerooConfig.TESRDistance.maxDistance == 0.0D ? d : FixerooConfig.TESRDistance.maxDistance;
