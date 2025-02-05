@@ -77,7 +77,11 @@ public class FixerooConfig {
         @Config.Comment({"Fixes modded tileEntity losing data when rotated by, for example, gregtech wrench.",
                 "Includes classpath(s) for the target tileEntity class.",
                 "Example: com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"})
-        public String[] utRotationGlitchFixTargets = new String[]{};
+        public String[] utRotationGlitchFixTargets = new String[]{
+                "funwayguy.bdsandm.blocks.tiles.TileEntityBarrel",
+                "funwayguy.bdsandm.blocks.tiles.TileEntityCrate",
+                "com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"
+        };
     }
 
     static {
