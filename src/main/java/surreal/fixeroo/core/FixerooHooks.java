@@ -1,7 +1,6 @@
 package surreal.fixeroo.core;
 
 import com.google.common.base.Predicate;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
@@ -31,6 +30,8 @@ import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.IntegrationHandler;
 
 import java.util.List;
+
+import static surreal.fixeroo.Fixeroo.TE_DISTANCE;
 
 @SuppressWarnings("unused")
 public class FixerooHooks {
@@ -180,9 +181,6 @@ public class FixerooHooks {
         }
         return color;
     }
-
-    // Tile Entity Render Distance
-    public static final Object2DoubleMap<ResourceLocation> TE_DISTANCE = FixerooConfig.TESRDistance.getDistanceMap();
 
     public static double TileEntity$getDistance(double d, TileEntity te) {
         double defVal = FixerooConfig.TESRDistance.maxDistance == 0.0D ? d : FixerooConfig.TESRDistance.maxDistance;
