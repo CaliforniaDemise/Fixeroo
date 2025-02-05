@@ -17,6 +17,7 @@ import java.util.Locale;
 public class Fixeroo {
 
     public static final String MODID = "xporbclump";
+    public static final Object2DoubleMap<ResourceLocation> TE_DISTANCE = getDistanceMap();
 
     @Mod.EventHandler
     public void construction(FMLConstructionEvent event) {
