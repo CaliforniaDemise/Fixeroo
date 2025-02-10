@@ -36,10 +36,6 @@ import static surreal.fixeroo.Fixeroo.TE_DISTANCE;
 @SuppressWarnings("unused")
 public class FixerooHooks {
 
-    public static void debug(Object obj) {
-        System.out.println(obj);
-    }
-
     // XP Orb Clump
     public static void EntityXPOrb$onUpdate(EntityXPOrb orb) {
         if (orb.xpValue == Integer.MAX_VALUE) return;

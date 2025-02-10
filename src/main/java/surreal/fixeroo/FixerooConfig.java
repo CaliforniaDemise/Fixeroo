@@ -1,14 +1,8 @@
 package surreal.fixeroo;
 
 import com.cleanroommc.configanytime.ConfigAnytime;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
-import org.jetbrains.annotations.Nullable;
 import surreal.fixeroo.core.FixerooPlugin;
-
-import java.util.Locale;
 
 @Config(modid = Fixeroo.MODID)
 public class FixerooConfig {
@@ -64,7 +58,7 @@ public class FixerooConfig {
         public double maxDistance = 0.0D;
 
         @Config.Comment({"The max distance you can go away before tile entity gets discarded for rendering.", "You can't use 0 or negative values. You can use MAX to denote no limits. 4096 is the default distance limit.", "The distance given will be square rooted to get actual distance.", "Example: minecraft:banner#4096.0"})
-        public String[] distanceList = new String[] {};
+        public String[] distanceList = new String[0];
 
         @Config.Comment({"Remove the distance limit altogether.", "This option makes both of the other options redundant."})
         public boolean I_AM_HIM = false;
@@ -73,15 +67,20 @@ public class FixerooConfig {
     public static class TileEntityRotationFix {
 
         @Config.RequiresMcRestart
+        @Config.Name("Fix Tile Entity Rotation")
+        @Config.Comment({
+                "Fix some modded tile entities losing their data when rotated by wrenches",
+                "Fixes tile entities from: Barrels, Drums, Storage & More, Traveler's Backpack"
+        })
+        public boolean enableRotationFix = true;
+
+        @Config.RequiresMcRestart
         @Config.Name("Rotation Glitch Fix Target Classes")
-        @Config.Comment({"Fixes modded tileEntity losing data when rotated by, for example, gregtech wrench.",
-                "Includes classpath(s) for the target tileEntity class.",
+        @Config.Comment({
+                "Additional classes of tile entities that are not on the list for people that know how this thing works.",
+                "Be sure to start a new issue on this mods GitHub page if you find a tile entity that suffers from this issue.",
                 "Example: com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"})
-        public String[] utRotationGlitchFixTargets = new String[]{
-                "funwayguy.bdsandm.blocks.tiles.TileEntityBarrel",
-                "funwayguy.bdsandm.blocks.tiles.TileEntityCrate",
-                "com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"
-        };
+        public String[] tileEntities = new String[0];
     }
 
     static {

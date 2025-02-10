@@ -1,14 +1,17 @@
 package surreal.fixeroo.core;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.launchwrapper.IClassTransformer;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.core.transformers.*;
 
-import java.util.Arrays;
+import java.util.Set;
 
 
 @SuppressWarnings("unused")
 public class FixerooTransformer implements IClassTransformer {
+
+    private final Set<String> addTEs = this.buildAddTEs();
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -45,11 +48,22 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.machinemuse.powersuits.common.base.ModuleManager": return MPSTransformer.transformModuleManager(transformedName, basicClass);
             case "net.machinemuse.powersuits.common.config.MPSSettings": return MPSTransformer.transformMPSSettings(transformedName, basicClass);
         }
-
-        if (Arrays.asList(FixerooConfig.TERotationFix.utRotationGlitchFixTargets).contains(transformedName)) {
+        if (FixerooConfig.TERotationFix.enableRotationFix && this.addTEs.contains(transformedName)) {
             return MisrotatedModdedTETransformer.transformModdedTE(transformedName, basicClass);
         }
 
         return basicClass;
+    }
+
+    private Set<String> buildAddTEs() {
+        ImmutableSet.Builder<String> builder = new ImmutableSet.Builder<>();
+        builder.add(
+                "funwayguy.bdsandm.blocks.tiles.TileEntityBarrel",
+                "funwayguy.bdsandm.blocks.tiles.TileEntityCrate",
+
+                "com.tiviacz.travelersbackpack.tileentity.TileEntityTravelersBackpack"
+        );
+        builder.add(FixerooConfig.TERotationFix.tileEntities);
+        return builder.build();
     }
 }

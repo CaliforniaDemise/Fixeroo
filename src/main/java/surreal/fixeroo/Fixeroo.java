@@ -9,10 +9,11 @@ import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import org.jetbrains.annotations.Nullable;
 import surreal.fixeroo.events.EventXPOrb;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 @Mod.EventBusSubscriber
-@Mod(modid = Fixeroo.MODID, name = "Fixeroo", version = "@VERSION@", dependencies = "required-after:configanytime")
+@Mod(modid = Fixeroo.MODID, name = "Fixeroo", version = Tags.MOD_VERSION, dependencies = "required-after:configanytime")
 @SuppressWarnings("unused")
 public class Fixeroo {
 
@@ -26,6 +27,7 @@ public class Fixeroo {
 
     @Nullable
     public static Object2DoubleMap<ResourceLocation> getDistanceMap() {
+        System.out.println(Arrays.toString(FixerooConfig.TESRDistance.distanceList));
         if (FixerooConfig.TESRDistance.distanceList.length == 0) return null;
         Object2DoubleMap<ResourceLocation> map = new Object2DoubleOpenHashMap<>();
         for (String str : FixerooConfig.TESRDistance.distanceList) {
