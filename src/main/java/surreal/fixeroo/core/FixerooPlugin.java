@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 
 @IFMLLoadingPlugin.Name("Fixeroo")
@@ -38,15 +37,10 @@ public class FixerooPlugin implements IFMLLoadingPlugin {
     @Override
     public void injectData(Map<String, Object> data) {
         try {
-            Class.forName("top.outlands.foundation.LaunchHandler");
+            Class.forName("com.cleanroommc.configanytime.ConfigAnytime", false, FixerooPlugin.class.getClassLoader());
             configAnytime = true;
         }
-        catch (ClassNotFoundException e) {
-            List coremods = (List) data.get("coremodList");
-            for (Object coremod : coremods) {
-                if (coremod.toString().startsWith("ConfigAnytimePlugin")) configAnytime = true;
-            }
-        }
+        catch (ClassNotFoundException ignored) {}
     }
 
     @Override

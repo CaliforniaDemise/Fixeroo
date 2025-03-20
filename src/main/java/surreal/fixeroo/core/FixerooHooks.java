@@ -185,4 +185,13 @@ public class FixerooHooks {
         if (distance == 0.0) return defVal;
         return distance;
     }
+
+    // Tinkers Complement
+    public static void TiCom$fixChiselDupe(ItemStack chisel, boolean isBroken) {
+        if (isBroken) {
+            NBTTagCompound compound = chisel.getTagCompound();
+            if (compound == null) return;
+            compound.removeTag("chiseldata"); // remove stack because it gets dropped when item is broken
+        }
+    }
 }

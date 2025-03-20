@@ -27,7 +27,6 @@ public class Fixeroo {
 
     @Nullable
     public static Object2DoubleMap<ResourceLocation> getDistanceMap() {
-        System.out.println(Arrays.toString(FixerooConfig.TESRDistance.distanceList));
         if (FixerooConfig.TESRDistance.distanceList.length == 0) return null;
         Object2DoubleMap<ResourceLocation> map = new Object2DoubleOpenHashMap<>();
         for (String str : FixerooConfig.TESRDistance.distanceList) {

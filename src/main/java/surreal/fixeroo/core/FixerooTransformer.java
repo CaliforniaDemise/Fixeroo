@@ -4,9 +4,10 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.launchwrapper.IClassTransformer;
 import surreal.fixeroo.FixerooConfig;
 import surreal.fixeroo.core.transformers.*;
+import surreal.fixeroo.core.transformers.mods.ModularPowersuitsTransformer;
+import surreal.fixeroo.core.transformers.mods.TinkersComplementTransformer;
 
 import java.util.Set;
-
 
 @SuppressWarnings("unused")
 public class FixerooTransformer implements IClassTransformer {
@@ -45,8 +46,10 @@ public class FixerooTransformer implements IClassTransformer {
             case "net.minecraft.tileentity.TileEntity": return TESRRenderDistanceTransformer.transformTileEntity(transformedName, basicClass);
             case "net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher": return TESRRenderDistanceTransformer.transformTileEntityRendererDispatcher(transformedName, basicClass);
 
-            case "net.machinemuse.powersuits.common.base.ModuleManager": return MPSTransformer.transformModuleManager(transformedName, basicClass);
-            case "net.machinemuse.powersuits.common.config.MPSSettings": return MPSTransformer.transformMPSSettings(transformedName, basicClass);
+            case "net.machinemuse.powersuits.common.base.ModuleManager": return ModularPowersuitsTransformer.transformModuleManager(transformedName, basicClass);
+            case "net.machinemuse.powersuits.common.config.MPSSettings": return ModularPowersuitsTransformer.transformMPSSettings(transformedName, basicClass);
+
+            case "knightminer.tcomplement.plugin.chisel.items.ItemChisel": return TinkersComplementTransformer.transformItemChisel(transformedName, basicClass);
         }
         if (FixerooConfig.TERotationFix.enableRotationFix && this.addTEs.contains(transformedName)) {
             return MisrotatedModdedTETransformer.transformModdedTE(transformedName, basicClass);
