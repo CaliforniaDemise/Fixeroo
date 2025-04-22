@@ -92,22 +92,17 @@ public class GolemTransformer extends TypicalTransformer {
                 }
             }
             else if (method.name.equals(getName("getGolemPattern", "func_176388_T"))) {
-                AbstractInsnNode node = null;
-                for (AbstractInsnNode n : method.instructions.toArray()) {
-                    if (n.getOpcode() == BIPUSH && ((IntInsnNode) n).operand == 126) {
-                        node = n.getNext();
-                        break;
-                    }
+                AbstractInsnNode node = method.instructions.getLast();
+                do {
+                    while (node.getOpcode() != INVOKEVIRTUAL || !((MethodInsnNode) node).name.equals(getName("where", "func_177662_a"))) node = node.getPrevious();
+                    while (node.getOpcode() != BIPUSH) node = node.getPrevious();
+                } while (((IntInsnNode) node).operand != 126);
+                AbstractInsnNode nodeToRemove = node.getNext();
+                while (nodeToRemove.getOpcode() != INVOKEVIRTUAL || !((MethodInsnNode) nodeToRemove).name.equals(getName("where", "func_177662_a"))) {
+                    nodeToRemove = nodeToRemove.getNext();
+                    method.instructions.remove(nodeToRemove.getPrevious());
                 }
-
-                if (node != null) {
-                    for (int i = 0; i < 3; i++) {
-                        node = node.getNext();
-                        method.instructions.remove(node.getPrevious());
-                    }
-
-                    method.instructions.insertBefore(node, hook("BlockPumpkin$predicateAny", "()Lcom/google/common/base/Predicate;"));
-                }
+                method.instructions.insertBefore(nodeToRemove, hook("BlockPumpkin$predicateAny", "()Lcom/google/common/base/Predicate;"));
             }
         }
         return write(cls);
