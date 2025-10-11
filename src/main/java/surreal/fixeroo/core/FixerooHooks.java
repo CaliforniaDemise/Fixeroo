@@ -22,7 +22,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
@@ -64,7 +63,7 @@ public class FixerooHooks {
 
     public static float RenderXPOrb$getSize(EntityXPOrb orb) {
         int xpValue = orb.xpValue;
-        return Math.max(0.3F, MathHelper.sqrt(xpValue) / 100);
+        return Math.max(0.3F, Math.log(xpValue + 1) / 100);
     }
 
     // Golem Tweaks
