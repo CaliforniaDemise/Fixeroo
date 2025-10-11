@@ -11,10 +11,13 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
-archivesBaseName = project.archives_base_name
+base {
+    archivesName = project.archives_base_name
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    sourceCompatibility = targetCompatibility = 8
 }
 
 configurations {

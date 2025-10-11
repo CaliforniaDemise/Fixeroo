@@ -5,6 +5,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import surreal.fixeroo.FixerooConfig;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class FixerooPlugin implements IFMLLoadingPlugin {
 
     protected static final Logger LOGGER = LogManager.getLogger("Fixeroo");
 
-    public static boolean configAnytime = false;
+    protected static boolean configAnytime = false;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -37,8 +38,10 @@ public class FixerooPlugin implements IFMLLoadingPlugin {
     @Override
     public void injectData(Map<String, Object> data) {
         try {
+            System.out.println();
             Class.forName("com.cleanroommc.configanytime.ConfigAnytime", false, FixerooPlugin.class.getClassLoader());
             configAnytime = true;
+            FixerooConfig.register();
         }
         catch (ClassNotFoundException ignored) {}
     }

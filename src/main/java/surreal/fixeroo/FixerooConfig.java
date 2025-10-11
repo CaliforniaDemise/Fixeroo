@@ -83,9 +83,7 @@ public class FixerooConfig {
         public String[] tileEntities = new String[0];
     }
 
-    static {
-        if (FixerooPlugin.configAnytime) {
-            ConfigAnytime.register(FixerooConfig.class);
-        }
+    public static void register() {
+        ConfigAnytime.register(FixerooConfig.class);
     }
 }
