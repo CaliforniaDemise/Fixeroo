@@ -63,7 +63,7 @@ public class FixerooHooks {
 
     public static float RenderXPOrb$getSize(EntityXPOrb orb) {
         int xpValue = orb.xpValue;
-        return Math.max(0.3F, Math.log(xpValue + 1) / 100);
+        return Math.max(0.3F, (float) Math.log(xpValue + 1) / 100);
     }
 
     // Golem Tweaks
