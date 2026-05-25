@@ -65,7 +65,6 @@ public class ModularPowersuitsTransformer extends TypicalTransformer {
                 break;
             }
         }
-        writeClass(cls);
         return write(cls);
     }
 }

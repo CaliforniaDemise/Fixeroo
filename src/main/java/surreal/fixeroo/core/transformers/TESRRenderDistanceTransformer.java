@@ -42,7 +42,6 @@ public class TESRRenderDistanceTransformer extends TypicalTransformer {
                 break;
             }
         }
-        writeClass(cls);
         return write(cls);
     }
 }

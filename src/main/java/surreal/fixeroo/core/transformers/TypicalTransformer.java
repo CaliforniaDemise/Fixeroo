@@ -19,6 +19,7 @@ import java.nio.file.Files;
 public class TypicalTransformer implements Opcodes {
 
     static Logger logger = FixerooPlugin.getLogger();
+    private static final boolean PRINT_CLASS = System.getProperty("fixeroo.print_class", "false").equals("true");
 
     protected static ClassNode read(String transformedName, byte[] basicClass) {
         logger.info("Transforming {}", transformedName);
@@ -39,7 +40,7 @@ public class TypicalTransformer implements Opcodes {
     }
 
     protected static void writeClass(ClassNode cls) {
-        if (!FMLLaunchHandler.isDeobfuscatedEnvironment()) return;
+        if (!PRINT_CLASS) return;
         File file = new File("classOut/" + cls.name + ".class");
         file.getParentFile().mkdirs();
         try {

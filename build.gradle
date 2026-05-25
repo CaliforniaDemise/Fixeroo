@@ -40,6 +40,7 @@ minecraft {
     if (project.use_coremod.toBoolean()) {
         args << '-Dfml.coreMods.load=' + coremod_plugin_class_name
     }
+    args << '-Dfixeroo.print_class=true'
     args << "-Xms128m"
     args << "-Xmx2048m"
     extraRunJvmArguments.addAll(args)
